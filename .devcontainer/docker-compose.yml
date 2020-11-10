@@ -11,6 +11,7 @@ services:
         # [Option] Install Node.js
         INSTALL_NODE: "true"
         NODE_VERSION: "lts/*"
+        INSTALL_AZURE_CLI: "false"
     volumes:
       - ..:/workspace:cached
 

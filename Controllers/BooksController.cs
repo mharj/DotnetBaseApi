@@ -2,6 +2,7 @@ using DotnetBaseApi.Models;
 using DotnetBaseApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using DotnetBaseApi.Filters;
 
 namespace DotnetBaseApi.Controllers
 {
@@ -17,10 +18,12 @@ namespace DotnetBaseApi.Controllers
         }
 
         [HttpGet]
+        [ETagFilter(200)]
         public ActionResult<List<Book>> Get() =>
             _bookService.Get();
 
         [HttpGet("{id:length(24)}", Name = "GetBook")]
+        [ETagFilter(200)]
         public ActionResult<Book> Get(string id)
         {
             var book = _bookService.Get(id);
