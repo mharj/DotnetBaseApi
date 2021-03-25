@@ -19,6 +19,7 @@ namespace DotnetBaseApi.Controllers
 
         [HttpGet]
         [ETagFilter(200)]
+        [TokenAuth]
         public ActionResult<List<Book>> Get() =>
             _bookService.Get();
 
@@ -45,7 +46,7 @@ namespace DotnetBaseApi.Controllers
         }
 
         [HttpPut("{id:length(24)}")]
-        public IActionResult Update(string id, Book bookIn)
+        public ActionResult<Book> Update(string id, Book bookIn)
         {
             var book = _bookService.Get(id);
 
@@ -56,7 +57,7 @@ namespace DotnetBaseApi.Controllers
 
             _bookService.Update(id, bookIn);
 
-            return NoContent();
+            return _bookService.Get(id);
         }
 
         [HttpDelete("{id:length(24)}")]
