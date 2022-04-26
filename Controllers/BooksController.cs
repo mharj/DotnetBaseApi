@@ -3,9 +3,11 @@ using DotnetBaseApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using DotnetBaseApi.Filters;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DotnetBaseApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class BooksController : ControllerBase
@@ -19,7 +21,7 @@ namespace DotnetBaseApi.Controllers
 
         [HttpGet]
         [ETagFilter(200)]
-        [TokenAuth]
+//        [Authorize(Roles = "List")]
         public ActionResult<List<Book>> Get() =>
             _bookService.Get();
 

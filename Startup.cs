@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Identity.Web;
 using DotnetBaseApi.Models;
 using DotnetBaseApi.Services;
 
@@ -28,6 +29,7 @@ namespace DotnetBaseApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMicrosoftIdentityWebApiAuthentication(Configuration, "AzureAd");
             // requires using Microsoft.Extensions.Options
             services.Configure<BookstoreDatabaseSettings>(
                 Configuration.GetSection(nameof(BookstoreDatabaseSettings)));
@@ -52,7 +54,12 @@ namespace DotnetBaseApi
             }
 
             app.UseRouting();
-
+            WebSocketOptions webSocketOptions = new WebSocketOptions
+            {
+                KeepAliveInterval = TimeSpan.FromMinutes(2)
+            };
+            app.UseWebSockets(webSocketOptions);
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
