@@ -15,6 +15,16 @@ namespace DotnetBaseApi.Services
             var database = client.GetDatabase(settings.DatabaseName);
 
             _books = database.GetCollection<Book>(settings.BooksCollectionName);
+            CreateIndex();
+        }
+        public async void CreateIndex()
+        {
+            var nameIndex = Builders<Book>.IndexKeys.Ascending(indexKey => indexKey.BookName);
+            var authorIndex = Builders<Book>.IndexKeys.Ascending(indexKey => indexKey.Author);
+            await _books.Indexes
+                      .CreateOneAsync(new CreateIndexModel<Book>(nameIndex));
+            await _books.Indexes
+                    .CreateOneAsync(new CreateIndexModel<Book>(authorIndex));
         }
 
         public List<Book> Get() =>

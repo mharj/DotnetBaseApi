@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
+using System.Text.Json;
 using DotnetBaseApi.Models;
 using DotnetBaseApi.Services;
 
@@ -29,6 +30,14 @@ namespace DotnetBaseApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "default",
+                                  policy =>
+                                  {
+                                      policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                                  });
+            });
             services.AddMicrosoftIdentityWebApiAuthentication(Configuration, "AzureAd");
             // requires using Microsoft.Extensions.Options
             services.Configure<BookstoreDatabaseSettings>(
@@ -38,7 +47,10 @@ namespace DotnetBaseApi
                 sp.GetRequiredService<IOptions<BookstoreDatabaseSettings>>().Value);
 
             services.AddSingleton<BookService>();
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(options =>
+             {
+                 options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,8 +64,8 @@ namespace DotnetBaseApi
             {
                 app.UseHttpsRedirection();
             }
-
             app.UseRouting();
+            app.UseCors();
             WebSocketOptions webSocketOptions = new WebSocketOptions
             {
                 KeepAliveInterval = TimeSpan.FromMinutes(2)

@@ -1,15 +1,17 @@
 using DotnetBaseApi.Models;
 using DotnetBaseApi.Services;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using DotnetBaseApi.Filters;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 
 namespace DotnetBaseApi.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("default")]
     public class BooksController : ControllerBase
     {
         private readonly BookService _bookService;

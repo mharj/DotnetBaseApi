@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Text;
-using Newtonsoft.Json;
+using System.Text.Json;
 using System.Security.Cryptography;
 using System;
 
@@ -29,7 +29,7 @@ namespace DotnetBaseApi.Filters
                 if (_statusCodes.Contains(context.HttpContext.Response.StatusCode))
                 {
                     //I just serialize the result to JSON, could do something less costly
-                    var content = JsonConvert.SerializeObject(context.Result);
+                    var content =  JsonSerializer.Serialize(context.Result);
 
                     var etag = ETagGenerator.GetETag(context.HttpContext.Request.Path.ToString(), Encoding.UTF8.GetBytes(content));
 
