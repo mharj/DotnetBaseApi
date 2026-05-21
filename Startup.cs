@@ -65,7 +65,7 @@ namespace DotnetBaseApi
                 app.UseHttpsRedirection();
             }
             app.UseRouting();
-            app.UseCors();
+            app.UseCors("default");
             WebSocketOptions webSocketOptions = new WebSocketOptions
             {
                 KeepAliveInterval = TimeSpan.FromMinutes(2)
