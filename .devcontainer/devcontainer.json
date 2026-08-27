@@ -3,12 +3,17 @@
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "app",
 	// Set *default* container specific settings.json values on container create.
-	"settings": {},
-	// Add the IDs of extensions you want installed when the container is created.
-	"extensions": [
-		"ms-dotnettools.csharp",
-		"mongodb.mongodb-vscode"
-	],
+	"customizations": {
+		"vscode": {
+			"settings": {},
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
+				"ms-dotnettools.csharp",
+				"mongodb.mongodb-vscode",
+				"ms-dotnettools.csdevkit"
+			]
+		}
+	},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [5000, 5001],
 	// [Optional] To reuse of your local HTTPS dev cert:
