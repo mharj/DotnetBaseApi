@@ -12,14 +12,9 @@ namespace DotnetBaseApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [EnableCors("default")]
-    public class BooksController : ControllerBase
+    public class BooksController(IBookService bookService) : ControllerBase
     {
-        private readonly BookService _bookService;
-
-        public BooksController(BookService bookService)
-        {
-            _bookService = bookService;
-        }
+        private readonly IBookService _bookService = bookService;
 
         [HttpGet]
         [ETagFilter(200)]
