@@ -1,6 +1,8 @@
 version: 2
 updates:
   - package-ecosystem: "dotnet-sdk"
-    directory: "/"
+    directories:
+      - "/src/DotnetBaseApi"
+      - "/test/DotnetBaseApi.Tests"
     schedule:
       interval: "weekly"
