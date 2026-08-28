@@ -1,6 +1,6 @@
 version: 2
 updates:
-  - package-ecosystem: "dotnet"
+  - package-ecosystem: "nuget"
     directories:
       - "/src/DotnetBaseApi"
       - "/test/DotnetBaseApi.Tests"
