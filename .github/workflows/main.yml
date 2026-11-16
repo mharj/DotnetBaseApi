@@ -20,7 +20,7 @@ env:
 
 jobs:
   build:
-    name: Build, test, and publish check
+    name: Build and test
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -44,6 +44,7 @@ jobs:
         run: dotnet build DotnetBaseApi.sln --configuration Release --no-restore --property:ContinuousIntegrationBuild=true
 
       - name: Run tests
+        id: tests
         run: >-
           dotnet test DotnetBaseApi.sln
           --configuration Release
@@ -52,11 +53,14 @@ jobs:
           --logger trx
           --results-directory "${{ runner.temp }}/test-results"
 
-      - name: Upload test results
-        if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v7
+      - name: Show test results in job summary
+        if: ${{ !cancelled() && steps.tests.outcome != 'skipped' }}
+        uses: dorny/test-reporter@v3
         with:
-          name: test-results
+          name: .NET tests
           path: ${{ runner.temp }}/test-results/**/*.trx
-          if-no-files-found: warn
-          retention-days: 7
+          reporter: dotnet-trx
+          use-actions-summary: "true"
+          list-suites: failed
+          list-tests: failed
+          fail-on-empty: "true"

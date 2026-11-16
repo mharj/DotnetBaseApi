@@ -39,13 +39,13 @@ It uses the .NET 10 SDK to:
 - Restore dependencies and audit direct and transitive NuGet packages.
   Vulnerability findings are reported as warnings, not a blocking security gate.
 - Build the solution in Release mode with the SDK's default analyzers.
-- Run all tests and upload TRX results, including when tests fail.
-- Verify that the API can be published and upload the Release output.
+- Run all tests and display pass/fail/skip counts and failure details in the
+  GitHub Actions job summary, including when tests fail.
 
-The `test-results` and `api-release` artifacts are retained for 7 days.
-The workflow has read-only repository permissions, cancels superseded runs,
-and does not deploy anything. Tests use a mocked book service, so no MongoDB
-service or Azure credentials are needed.
+TRX files are generated for the summary reporter but are not uploaded as
+artifacts. The workflow has read-only repository permissions, cancels
+superseded runs, and does not deploy anything. Tests use a mocked book
+service, so no MongoDB service or Azure credentials are needed.
 
 ## Development Workflow
 
